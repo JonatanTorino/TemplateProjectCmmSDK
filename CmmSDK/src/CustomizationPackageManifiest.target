@@ -1,0 +1,105 @@
+<Project>
+  <!--Por ahora este target solo se usa con la extensión MSBuildTargets, seleccionando lo con el boton sobre el projecto POS
+  https://marketplace.visualstudio.com/items?itemName=GeorgeSamartzidis.MSBuildTargets
+  -->
+
+  <Target Name="PackageManifestJson" Condition="'$(ProjectName)' == 'POS'">
+    <UpdateManifestJsonPackage
+      PackageName="$(PackageName)"
+      PackagePublisher="$(PublisherDisplayName)"
+      PackageDescription="$(PackageDescription)"
+      MinimumPosVersion="$(PackageVersion)" />
+  </Target>
+
+  <!-- Esta es la fuente pero parece que no funciona con .netstandar2.0 -->
+  <!-- https://stackoverflow.com/questions/47552243/how-to-write-a-task-that-performs-appsettings-json-transforms-using-msbuild -->
+  <UsingTask TaskName="UpdateManifestJsonPackage"
+             TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <PackageName ParameterType="System.String" Required="true" />
+      <PackagePublisher ParameterType="System.String" Required="true" />
+      <PackageDescription ParameterType="System.String" Required="true" />
+      <MinimumPosVersion ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.Core" />
+      <Reference Include="$(NugetPackageRoot)newtonsoft.json\10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll" />
+
+      <Using Namespace="System.IO" />
+      <Using Namespace="Newtonsoft.Json.Linq" />
+
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+          const string path = @".\manifest.json";
+          string json = File.ReadAllText(path);
+
+          JObject manifest = JObject.Parse(json);
+          manifest["name"] = this.PackageName;
+          manifest["description"] = this.PackageDescription;
+          manifest["publisher"] = this.PackagePublisher;
+          manifest["minimumPosVersion"] = this.MinimumPosVersion;
+
+          File.WriteAllText(path, manifest.ToString());
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  <!--
+  -->
+
+  <!--<UsingTask TaskName="UpdateManifestJsonPackage"
+    TaskFactory="RoslynCodeTaskFactory"
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <PackageName ParameterType="System.String" Required="true" />
+      <PackagePublisher ParameterType="System.String" Required="true" />
+      <PackageDescription ParameterType="System.String" Required="true" />
+      <ManifestPath ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System" />
+
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text.Json.Nodes" />
+
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+          const string path = @".\manifest.json";
+          string json = File.ReadAllText(path);
+
+          var manifest = System.Text.Json.Nodes.JsonNode.Parse(json);
+          //manifest["name"] = this.PackageName;
+          //manifest["description"] = this.PackageDescription;
+          //manifest["publisher"] = this.PackagePublisher;
+
+          //File.WriteAllText(path, manifest.ToString());
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>-->
+
+  <!--
+  <UsingTask TaskName="UpdateManifestJsonPackage" AssemblyFile=".\CustomizationPackageLibrary.dll">
+    <ParameterGroup>
+      <PackageName ParameterType="System.String" Required="true" />
+      <PackagePublisher ParameterType="System.String" Required="true" />
+      <PackageDescription ParameterType="System.String" Required="true" />
+      <ManifestPath ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+            const string path = @".\manifest.json";
+            var library = new CustomizationPackageLibrary(this.PackageName,
+                                                          this.PackagePublisher,
+                                                          this.PackageDescription);
+            library.Execute(path);
+          ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  -->
+
+  <!-- probar con esta versión -->
+  <!-- https://stackoverflow.com/questions/7837644/how-to-replace-string-in-file-using-msbuild -->
+</Project>

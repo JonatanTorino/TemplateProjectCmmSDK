@@ -1,0 +1,34 @@
+<Project>
+
+  <PropertyGroup>
+    <PackageId>$(PackageTargetName)</PackageId>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ResolvePackageDependenciesForBuildDependsOn>
+      ResolveLockFileReferences;
+      ResolveLockFileAnalyzers;
+      ResolveLockFileCopyLocalFiles;
+      ResolveRuntimePackAssets;
+      RunProduceContentAssets;
+      IncludeTransitiveProjectReferences
+    </ResolvePackageDependenciesForBuildDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NugetPkgRepositoryFolder>../../../pkgs/</NugetPkgRepositoryFolder>
+  </PropertyGroup>
+
+  <Target Name="MakePkgsDirBefore" BeforeTargets="$(ResolvePackageDependenciesForBuildDependsOn)">
+    <MakeDir Directories="$(NugetPkgRepositoryFolder)" Condition="!Exists('$(NugetPkgRepositoryFolder)')" />
+    <MakeDir Directories="$(NugetPkgRepositoryFolder)$(MajorVersion)" Condition="!Exists('$(NugetPkgRepositoryFolder)$(MajorVersion)')" />
+  </Target>
+
+  <Target Name="CommerceSdkCopyNugetPkgFiles" AfterTargets="Pack">
+    <Copy
+      SourceFiles="@(_OutputPackItems)" Condition="'%(Extension)' == '.nupkg'"
+      DestinationFolder="$(NugetPkgRepositoryFolder)" />
+    <Copy
+      SourceFiles="@(_OutputPackItems)" Condition="'%(Extension)' == '.nupkg'"
+      DestinationFolder="$(NugetPkgRepositoryFolder)$(MajorVersion)" />
+  </Target>
+</Project>

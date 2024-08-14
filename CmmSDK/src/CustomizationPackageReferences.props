@@ -1,0 +1,7 @@
+<Project>
+  <Import Project=".\CustomizationPackageInstaller.target" />
+  <Import Project=".\CustomizationPackageNames.props " />
+  <Import Project=".\CustomizationPackageNuget.target" />
+  <Import Project=".\CustomizationPackageManifiest.target" />
+  <Import Project=".\BuildEventsHandler.target" />
+</Project>

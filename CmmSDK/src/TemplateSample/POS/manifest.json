@@ -1,0 +1,9 @@
+﻿{
+  "$schema": "./devDependencies/schemas/manifestSchema.json",
+  "name": "NOMBRE EXTENSION",
+  "description": "ESCRIPCION EXTENSION",
+  "publisher": "Axxon Consulting",
+  "version": "1.0.0",
+  "minimumPosVersion": "9.50.0.0",
+  "components": {}
+}

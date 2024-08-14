@@ -1,0 +1,130 @@
+<Project>
+  <PropertyGroup>
+    <CSUPath>C:\Program Files\Microsoft Dynamics 365\10.0\Commerce Scale Unit\</CSUPath>
+    <CSUExtensionBinDir>$(CSUPath)Extensions\</CSUExtensionBinDir>
+    <CSUPosExtensionJsDir>$(CSUPath)Microsoft\POS\Extensions\$(PackageName)\</CSUPosExtensionJsDir>
+    <CSUExtensionPackageBinDir>$(CSUExtensionBinDir)$(PackageName).ScaleUnit.Installer</CSUExtensionPackageBinDir>
+    <CSUExtensionPackageMergedBinDir>$(CSUExtensionBinDir)ext</CSUExtensionPackageMergedBinDir>
+    <CopyBinariesFiles Condition="'$(Configuration)' == 'Debug' And '$(BuildingInsideVisualStudio)' == 'true'">true</CopyBinariesFiles>
+    <HwsCustomServicesDeployScriptsOutput>..\..\..\ExtensionsPackageInstallers\$(MajorVersion)</HwsCustomServicesDeployScriptsOutput>
+    <HwsCustomServicesDeployBatch>$(HwsCustomServicesDeployScriptsOutput)\HwsCustomServiceDeployScripts\HwsCustomServices\HwsCustomServices.deploy.cmd</HwsCustomServicesDeployBatch>
+    <ExistsCSUExtensionPackageBinDir Condition="Exists('$(CSUExtensionPackageBinDir)')">True</ExistsCSUExtensionPackageBinDir>
+    <ExistsCSUExtensionPackageMergedBinDir Condition="Exists('$(CSUExtensionPackageMergedBinDir)')">True</ExistsCSUExtensionPackageMergedBinDir>
+    <ExistsCSUPosExtensionJsDir Condition="Exists('$(CSUPosExtensionJsDir)')">True</ExistsCSUPosExtensionJsDir>
+  </PropertyGroup>
+
+  <!--Copia los binarios compilados del proyecto CommerceRuntime-->
+  <Target Name="CopyDllsToDebug" Condition="'$(CopyBinariesFiles)' == 'true' And '$(ProjectName)' == 'CommerceRuntime'" AfterTargets="Build" DependsOnTargets="StopAndRecycleAppPoolRetailServer">
+    <ItemGroup>
+      <BinFiles Include="$(OutDir)\*.*" />
+      <BinFiles Remove="$(OutDir)\*.deps.json" />
+    </ItemGroup>
+    <Warning Condition="$(ExistsCSUExtensionPackageBinDir) != 'true' And $(ExistsCSUExtensionPackageMergedBinDir) != 'true'" Text="The path does not exists '$(CSUExtensionPackageBinDir)' or '$(ExistsCSUExtensionPackageMergedBinDir)'" />
+    
+    <Message Condition="$(ExistsCSUExtensionPackageBinDir) == 'true'" Importance="High"
+             Text="Copying binary files from @(BinFiles) to '$(CSUExtensionPackageBinDir)'" />
+    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(CSUExtensionPackageBinDir)"
+          Condition="$(ExistsCSUExtensionPackageBinDir) == 'true'" SkipUnchangedFiles="true" />
+    
+    <Message Condition="$(ExistsCSUExtensionPackageBinDir) != 'true' And $(ExistsCSUExtensionPackageMergedBinDir) == 'true'" Importance="High"
+             Text="Copying binary files from @(BinFiles) to '$(CSUExtensionPackageMergedBinDir)'" />
+    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(CSUExtensionPackageMergedBinDir)"
+          Condition="$(ExistsCSUExtensionPackageBinDir) != 'true' And $(ExistsCSUExtensionPackageMergedBinDir) == 'true'" SkipUnchangedFiles="true" />
+  </Target>
+
+  <!--Copia los binarios compilados del proyecto POS-->
+  <Target Name="CopyJsToDebug" Condition="'$(CopyBinariesFiles)' == 'true' And '$(ProjectName)' == 'POS'" AfterTargets="Build;Rebuild">
+    <ItemGroup>
+      <AppFolder Include="**\*.*" Exclude="*.*; **\*.ts; bin\**\*.*; devDependencies\**\*.*; obj\**\*.*" />
+      <PosFiles Include="@(AppFolder); manifest.json" />
+    </ItemGroup>
+
+    <Warning Condition="$(ExistsCSUPosExtensionJsDir) == 'false'" Text="The path does not exists '$(CSUPosExtensionJsDir)'" />
+    <Message Condition="$(ExistsCSUPosExtensionJsDir) == 'true'" Importance="High"
+             Text="Copying binary files from @(PosFiles) to '$(CSUPosExtensionJsDir)'" />
+    <Copy SourceFiles="@(PosFiles)" DestinationFiles="@(PosFiles->'$(CSUPosExtensionJsDir)%(RelativeDir)%(Filename)%(Extension)')"
+          Condition="Exists(@(PosFiles)) and Exists($(CSUPosExtensionJsDir))" SkipUnchangedFiles="true" />
+  </Target>
+
+  <!--Reinicia el AppPool del RetailServer-->
+  <Target Name="StopAndRecycleAppPoolRetailServer" Condition="'$(CopyBinariesFiles)' == 'true' And '$(ProjectName)' == 'CommerceRuntime'" AfterTargets="Build">
+    <!-- Define el nombre del AppPool que deseas detener -->
+    <PropertyGroup>
+      <AppPoolToStop>RssuCore</AppPoolToStop>
+      <AppPoolToRecycle>RetailServer</AppPoolToRecycle>
+    </PropertyGroup>
+
+    <!-- Ejecuta un script de PowerShell para detener el proceso w3wp si está en ejecución -->
+    <Exec Command="powershell -Command &quot;$appPoolProcess = Get-WmiObject -Namespace 'root\WebAdministration' -Query \&quot;SELECT * FROM ApplicationPool WHERE name='$(AppPoolToStop)'\&quot;; if ($appPoolProcess) { Restart-WebAppPool -Name '$(AppPoolToStop)'; Write-Host 'Se ha reciclado el proceso w3wp del AppPool $(AppPoolToStop).' }&quot;" />
+    <!-- Ejecuta un script de PowerShell para reciclar el proceso w3wp-->
+    <Exec Command="powershell -Command &quot;Restart-WebAppPool -Name '$(AppPoolToRecycle)'; Write-Host 'Se ha reciclado el proceso w3wp del AppPool $(AppPoolToRecycle).'&quot;" />
+
+    <Sleep Delay="3000" />
+  </Target>
+
+  <!--Reinicia el AppPool del HwsCustomService-->
+  <Target Name="RecycleAppPoolHwsCustomServices" Condition="'$(ProjectName)' == 'HwsCustomServices'" AfterTargets="AfterPublish">
+    <Message Text="Recycling AppPool HwsCustomServices" Importance="High" />
+    <Exec Command="C:\Windows\System32\inetsrv\appcmd recycle apppool /apppool.name:HwsCustomServices" ContinueOnError="true" />
+  </Target>   
+
+  <!--Hace deploy del HwsCustomService-->
+  <Target Name="DeployHwsCustomServices" Condition="'$(ProjectName)' == 'HwsCustomServices'" AfterTargets="RecycleAppPoolHwsCustomServices">
+    <ConvertToAbsolutePath Paths="$(HwsCustomServicesDeployBatch)">
+      <Output TaskParameter="AbsolutePaths" PropertyName="HwsCustomServicesDeployBatchAbs" />
+    </ConvertToAbsolutePath>
+    <Message Text="Deploying HwsCustomServices" Importance="High" />
+    <Exec Command="$(HwsCustomServicesDeployBatchAbs) /Y" ContinueOnError="true" />
+  </Target>
+
+  <!--Crea la carpeta para ubicar los instaladores del HwsCustomService-->
+  <Target Name="MakeHwsCustomServicesDeployScriptsOutput" Condition="'$(ProjectName)' == 'HwsCustomServices'" BeforeTargets="PrepareForBuild">
+    <ItemGroup>
+      <ScriptFiles Include="HwsCustomServicesDeployScripts\**\*.*" />
+    </ItemGroup>
+
+    <MakeDir Directories="$(HwsCustomServicesDeployScriptsOutput)\HwsCustomServicesDeployScripts" Condition="!Exists('$(HwsCustomServicesDeployScriptsOutput)\HwsCustomServicesDeployScripts')" />
+
+    <Message Text="Copying binary files from @(ScriptFiles) to '$(HwsCustomServicesDeployScriptsOutput)'" Importance="High" />
+    <Copy SourceFiles="@(ScriptFiles)" DestinationFiles="@(ScriptFiles->'$(HwsCustomServicesDeployScriptsOutput)\%(RelativeDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+
+  <!--Elimina la carpeta del nuget que exista en $(USERPROFILE)\.nuget\packages -->
+  <Target Name="RemovePackagaReferenceFolder" AfterTargets="Build;Rebuild" Condition="'$(GeneratePackageOnBuild)' == 'true' and '$(BuildingInsideVisualStudio)' == 'true'">
+    <PropertyGroup>
+      <PackagaReferenceFolder>$(USERPROFILE)\.nuget\packages</PackagaReferenceFolder>
+    </PropertyGroup>
+    <ItemGroup>
+      <PackageReferenceName Include="$([System.IO.Directory]::GetDirectories(&quot;$(PackagaReferenceFolder)&quot;,&quot;$(PackageTargetName)&#42;&quot;))" />
+    </ItemGroup>
+
+    <Message Text="Removing directory '@(PackageReferenceName)'" Importance="High" />
+    <RemoveDir Directories="@(PackageReferenceName)" />
+  </Target>
+
+  <!--Al compilar se copian librerías que deben ser eliminadas porque no son compatibles con CSU CORE (NET 6)-->
+  <Target Name="DeleteDllsForHealtCheckCsuCore" AfterTargets="CopyFilesToOutputDirectory">
+    <ItemGroup>
+      <FileToDelete Include="$(OutDir)\System.Runtime.CompilerServices.Unsafe.dll" />
+      <ProjectsWhereDeleteFiles Include="DevAxEJEMPLO" />
+    </ItemGroup>
+
+    <Message Condition="'%(ProjectsWhereDeleteFiles.Identity)' == '$(PackageName)'" Text="Borrando archivos '@(FileToDelete)'" Importance="High" />
+    <Delete  Condition="'%(ProjectsWhereDeleteFiles.Identity)' == '$(PackageName)'" Files="@(FileToDelete)" />
+  </Target>
+
+  <!--Tarea para pausar el MSBuild por un intervalo indicado-->
+  <UsingTask TaskName="Sleep" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <!-- Delay in milliseconds -->
+      <Delay ParameterType="System.Int32" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+System.Threading.Thread.Sleep(this.Delay);
+]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>

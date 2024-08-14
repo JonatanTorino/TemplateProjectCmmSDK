@@ -1,0 +1,18 @@
+<Project>
+  <PropertyGroup>
+    <PackageId>$(PackageTargetName)</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <InstallerOutputPath>..\..\..\ExtensionsPackageInstallers\$(MajorVersion)</InstallerOutputPath>
+  </PropertyGroup>
+
+  <Target Name="MakePkgsDir" AfterTargets="PrepareForBuild" Condition="'$(ProjectName)' == 'ScaleUnit.Installer'">
+    <MakeDir Directories="$(InstallerOutputPath)" Condition="!Exists('$(InstallerOutputPath)')" />
+  </Target>
+
+  <Target Name="CopyInstallerBuilded" AfterTargets="Build" Condition="'$(ProjectName)' == 'ScaleUnit.Installer'">
+    <Message Text="Copiando el instalador a la carpeta de instaladores" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(InstallerOutputPath)" />
+  </Target>
+</Project>

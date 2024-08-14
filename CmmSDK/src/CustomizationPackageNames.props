@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <PackagePrefix>DevAx</PackagePrefix>
+    <PackageAssemblyName>$(PackagePrefix).$(MSBuildProjectName)</PackageAssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageNameLength>$(PackagePrefix.Length)</PackageNameLength>
+    <PackageNamespace>$(PackageName.Remove(0, $(PackageNameLength)))</PackageNamespace>
+    <PackageTargetName>$(PackagePrefix)$(PackageNamespace).$(MSBuildProjectName)</PackageTargetName>
+    <PackageId>$(PackageTargetName)</PackageId>
+    <AssemblyName>$(PackageTargetName)</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+  </PropertyGroup>
+</Project>

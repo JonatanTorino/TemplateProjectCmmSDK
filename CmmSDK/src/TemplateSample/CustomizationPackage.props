@@ -1,0 +1,14 @@
+<Project>
+  <Import Project="..\..\repo.props" />
+
+  <PropertyGroup>
+    <PackagePublisher Condition="'$(PackagePublisher)' == ''">$(Publisher)</PackagePublisher>
+    <PackagePublisherDisplayName Condition="'$(PackagePublisherDisplayName)' == ''">$(PublisherDisplayName)</PackagePublisherDisplayName>
+    <PackageVersion Condition="'$(PackageVersion)' == ''">$(Version)</PackageVersion>
+    <PackageName Condition="'$(PackageName)' == ''">DevAx<!--NombreDeLaExtension CON el prefijo DevAx-->TemplateSample</PackageName>
+    <PackageDisplayName Condition="'$(PackageDisplayName)' == ''"><!--EJEMPLO-->Pre End Transaction</PackageDisplayName>
+    <PackageDescription Condition="'$(PackageDescription)' == ''"><!--EJEMPLO-->workflow for validate pre end transaction</PackageDescription>
+  </PropertyGroup>
+
+  <Import Project="..\CustomizationPackageReferences.props "/>
+</Project>

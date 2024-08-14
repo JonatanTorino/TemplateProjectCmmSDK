@@ -1,0 +1,13 @@
+<Project>
+  <Import Project="..\..\repo.props" />
+
+  <PropertyGroup>
+    <PackagePublisher Condition="'$(PackagePublisher)' == ''">$(Publisher)</PackagePublisher>
+    <PackagePublisherDisplayName Condition="'$(PackagePublisherDisplayName)' == ''">$(PublisherDisplayName)</PackagePublisherDisplayName>
+    <PackageVersion Condition="'$(PackageVersion)' == ''">$(Version)</PackageVersion>
+    <PackageName Condition="'$(PackageName)' == ''">DevAxMergedPackage</PackageName>
+    <PackageDisplayName Condition="'$(PackageDisplayName)' == ''">MergedPackage</PackageDisplayName>
+    <PackageDescription Condition="'$(PackageDescription)' == ''">Merged Cloud Scale Unit Extension</PackageDescription>
+  </PropertyGroup>
+    
+</Project>

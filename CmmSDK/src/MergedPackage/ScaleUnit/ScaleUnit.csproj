@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <Import Project="..\CustomizationPackage.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <!--Aceleradores-->
+    <PackageReference Include="DevAx[NombrePaqueteNuget].ScaleUnit" Version="$(MajorVersion).*" />
+    
+    <PackageReference Include="Microsoft.Dynamics.Commerce.Sdk.ScaleUnit" Version="$(CommerceSdkPackagesVersion)" />
+  </ItemGroup>
+
+  <Target Name="RenameGeneratedSdkPackage" AfterTargets="Build" DependsOnTargets="GenerateSdkPackage">
+    <ItemGroup>
+      <PackageFile Include="$(OutputPath)$(ScaleUnitPackageName).zip" />
+    </ItemGroup>
+    <Message Text="Move: @(PackageFile) -&gt; @(PackageFile -&gt; Replace('$(ScaleUnitPackageName)', '$(PackageName).$(PackageVersion)'))" Importance="High" />
+    <Move SourceFiles="@(PackageFile)" DestinationFiles="@(PackageFile -&gt; Replace('$(ScaleUnitPackageName)', '$(PackageName).$(PackageVersion)'))" />
+  </Target>
+</Project>
