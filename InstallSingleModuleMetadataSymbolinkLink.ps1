@@ -18,7 +18,7 @@ for ($i = 0; $i -lt $modelList.Count; $i++) {
     Write-Host "$($i + 1): $($modelList[$i])"
 }
 
-$selection = Read-Host "Seleccione un modelo (Ingrese el número)"
+[int] $selection = Read-Host "Seleccione un modelo (Ingrese el número)"
 
 if ($selection -ge 1 -and $selection -le $modelList.Count) {
     $modelName = $modelList[$selection - 1]
