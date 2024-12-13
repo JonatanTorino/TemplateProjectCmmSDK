@@ -1,0 +1,19 @@
+<RetailCdxSeedData ChannelDBMajorVersion="7" ChannelDBSchema="ext" Name="AX7">
+	<Jobs>
+		<Job DescriptionLabelId="TrnLG" Description="TrnLG Is Quotation" Id="TrnLG" />
+	</Jobs>
+	<Subjobs>
+		<Subjob Id="RetailFunctionalityProfile"
+				TargetTableName ="TRNLGRETAILFUNCTIONALITYPROFILE"
+				TargetTableSchema="ext"
+				OverrideTarget="false">
+			<ScheduledByJobs>
+				<ScheduledByJob>TrnLG</ScheduledByJob>
+			</ScheduledByJobs>
+			<AxFields>
+				<Field Name="PROFILEID" />
+				<Field Name="TRNLGISQUOTATION" />
+			</AxFields>
+		</Subjob>
+	</Subjobs>
+</RetailCdxSeedData>

@@ -1,0 +1,3 @@
+﻿NewLabel0=Label files created on 11/28/2024 18:53:29 for label file Id DevAxLabel and language es
+ ;Label file comment - see above label
+TrnLGIsQuotation=Es Presupuesto

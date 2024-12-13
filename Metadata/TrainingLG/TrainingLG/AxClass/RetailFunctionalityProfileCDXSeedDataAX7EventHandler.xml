@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>RetailFunctionalityProfileCDXSeedDataAX7EventHandler</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+class RetailFunctionalityProfileCDXSeedDataAX7EventHandler
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>RetailCDXSeedDataBase_registerCDXSeedDataExtension</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Registers the extension CDX seed data resource to be used during CDX seed data generation.
+    /// </summary>
+    /// <param name="result">The result object which is used to return the resource name.</param>
+    [SubscribesTo(classStr(RetailCDXSeedDataBase), delegateStr(RetailCDXSeedDataBase, registerCDXSeedDataExtension))]
+    public static void RetailCDXSeedDataBase_registerCDXSeedDataExtension(str originalCDXSeedDataResource, List resources)
+    {
+        if (originalCDXSeedDataResource == resourceStr(RetailCDXSeedDataAX7))
+        {
+            resources.addEnd(resourceStr(RetailCDXSeedDataAX7_TrnLG));
+        }
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

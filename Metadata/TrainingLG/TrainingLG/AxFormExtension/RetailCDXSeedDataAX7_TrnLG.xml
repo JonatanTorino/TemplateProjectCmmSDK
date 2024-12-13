@@ -1,0 +1,9 @@
+<RetailCdxSeedData ChannelDBMajorVersion="7" ChannelDBSchema="ext" Name="AX7">
+	<Subjobs>
+		<Subjob Id="RetailFunctionalityProfile" TargetTableSchema="ext" AxTableName="DevAxDefaultOrderType">
+			<AxFields>
+				<Field Name="IsQuotation"/>
+			</AxFields>
+		</Subjob>
+	</Subjobs>
+</RetailCdxSeedData>

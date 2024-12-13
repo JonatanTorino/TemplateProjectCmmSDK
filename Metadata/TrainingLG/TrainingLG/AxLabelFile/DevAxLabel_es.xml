@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxLabelFile xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>DevAxLabel_es</Name>
+	<LabelContentFileName>DevAxLabel.es.label.txt</LabelContentFileName>
+	<LabelFileId>DevAxLabel</LabelFileId>
+	<Language>es</Language>
+	<RelativeUriInModelStore>TrainingLG\TrainingLG\AxLabelFile\LabelResources\es\DevAxLabel.es.label.txt</RelativeUriInModelStore>
+</AxLabelFile>
