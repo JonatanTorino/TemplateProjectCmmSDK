@@ -1,0 +1,9 @@
+﻿{
+  "$schema": "./devDependencies/schemas/manifestSchema.json",
+  "name": "DevAxxAddCartLinesToCart",
+  "description": "DevAxxAddCartLinesToCart",
+  "publisher": "Axxon Consulting",
+  "version": "1.0.0",
+  "minimumPosVersion": "9.50.0.0",
+  "components": {}
+}

@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "ConsoleTestReport": {
+      "commandName": "Project",
+      "workingDirectory": "K:\\BranchsLG\\TemplateProjectCmmSDK\\CmmSDK\\src\\AxxAddCartLinesToCartReport\\ConsoleTestReport\\bin\\Debug\\net6.0",
+      "nativeDebugging": true
+    }
+  }
+}
