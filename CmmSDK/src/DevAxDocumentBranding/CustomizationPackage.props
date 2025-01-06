@@ -1,0 +1,14 @@
+<Project>
+  <Import Project="..\..\repo.props" />
+
+  <PropertyGroup>
+    <PackagePublisher Condition="'$(PackagePublisher)' == ''">$(Publisher)</PackagePublisher>
+    <PackagePublisherDisplayName Condition="'$(PackagePublisherDisplayName)' == ''">$(PublisherDisplayName)</PackagePublisherDisplayName>
+    <PackageVersion Condition="'$(PackageVersion)' == ''">$(Version)</PackageVersion>
+    <PackageName Condition="'$(PackageName)' == ''">DevAxDocumentBranding</PackageName>
+    <PackageDisplayName Condition="'$(PackageDisplayName)' == ''">DocumentBranding</PackageDisplayName>
+    <PackageDescription Condition="'$(PackageDescription)' == ''">Document Branding. Images for Reports</PackageDescription>
+  </PropertyGroup>
+
+  <Import Project="..\CustomizationPackageReferences.props "/>
+</Project>
