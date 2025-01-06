@@ -1,7 +1,7 @@
 ﻿using Microsoft.Dynamics.Commerce.Runtime.Messages;
 using System.Runtime.Serialization;
 
-namespace DevAx.CommerceRuntime.DocumentBranding.Messages
+namespace Axx.CommerceRuntime.DocumentBranding.Messages
 {
     [DataContract]
     public class GetRetailStoreTableDataRequest : Request

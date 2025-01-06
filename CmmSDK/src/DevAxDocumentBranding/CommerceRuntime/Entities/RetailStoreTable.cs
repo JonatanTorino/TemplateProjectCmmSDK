@@ -2,12 +2,12 @@ using Microsoft.Dynamics.Commerce.Runtime.ComponentModel.DataAnnotations;
 using Microsoft.Dynamics.Commerce.Runtime.DataModel;
 using System.Runtime.Serialization;
 
-namespace DevAx.CommerceRuntime.DocumentBranding.Entities
+namespace Axx.CommerceRuntime.DocumentBranding.Entities
 {
     public class RetailStoreTable : CommerceEntity
     {
-        private const string InvoiceImagesColumn = "DevAxInvoiceImages";
-        private const string QuoteImagesColumn = "DevAxQuoteImages";
+        private const string InvoiceImagesColumn = "AxxInvoiceImages";
+        private const string QuoteImagesColumn = "AxxQuoteImages";
         private const string RecIdColumn = "RECID";
         private const string DataAreaIdColumn = "DATAAREAID";
 

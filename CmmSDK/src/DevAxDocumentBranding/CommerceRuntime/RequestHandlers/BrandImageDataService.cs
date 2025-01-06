@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using DevAx.CommerceRuntime.DocumentBranding.Messages;
+using Axx.CommerceRuntime.DocumentBranding.Messages;
 using Microsoft.Dynamics.Commerce.Runtime.DataAccess.SqlServer;
 
-namespace DevAx.CommerceRuntime.DocumentBranding.DataService
+namespace Axx.CommerceRuntime.DocumentBranding.DataService
 {
     public class BrandImageDataService : SingleAsyncRequestHandler<GetBrandImageDataRequest>
     {
@@ -31,7 +31,7 @@ namespace DevAx.CommerceRuntime.DocumentBranding.DataService
                 parameters["@imageNumber"] = request.ImageNumber;
 
                 var result = await databaseContext.ExecuteStoredProcedureAsync<DocumentBranding.Entities.SysDocuBrandImages>(
-                    "ext.DEVAXGETDOCUBRANDIMAGES", parameters, queryResultSettings).ConfigureAwait(false);
+                    "ext.AxxGETDOCUBRANDIMAGES", parameters, queryResultSettings).ConfigureAwait(false);
 
                 image = result.Item2.Results[0].Image;
 

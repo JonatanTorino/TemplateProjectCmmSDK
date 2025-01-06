@@ -44,7 +44,7 @@ namespace Contoso.CommerceRuntime.Triggers
 
             var getExtensionsResponse = (GetExtensionPackageDefinitionsResponse)response;
             var extensionPackageDefinition = new ExtensionPackageDefinition();
-            extensionPackageDefinition.Name = "DevAxDocumentBranding";
+            extensionPackageDefinition.Name = "AxxDocumentBranding";
             extensionPackageDefinition.Publisher = "Axxon";
             extensionPackageDefinition.IsEnabled = true;
 

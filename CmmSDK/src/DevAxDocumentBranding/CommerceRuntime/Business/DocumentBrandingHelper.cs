@@ -1,8 +1,8 @@
-﻿using DevAx.CommerceRuntime.DocumentBranding.Messages;
+﻿using Axx.CommerceRuntime.DocumentBranding.Messages;
 using Microsoft.Dynamics.Commerce.Runtime;
 using System.Threading.Tasks;
 
-namespace DevAx.CommerceRuntime.DocumentBranding.Business
+namespace Axx.CommerceRuntime.DocumentBranding.Business
 {
     public class DocumentBrandingHelper
     {

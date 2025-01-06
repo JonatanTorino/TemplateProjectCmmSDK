@@ -3,9 +3,9 @@ using Microsoft.Dynamics.Commerce.Runtime.Data;
 using Microsoft.Dynamics.Commerce.Runtime.DataModel;
 using Microsoft.Dynamics.Commerce.Runtime.Messages;
 using System.Threading.Tasks;
-using DevAx.CommerceRuntime.DocumentBranding.Messages;
+using Axx.CommerceRuntime.DocumentBranding.Messages;
 
-namespace DevAx.CommerceRuntime.DocumentBranding.DataService
+namespace Axx.CommerceRuntime.DocumentBranding.DataService
 {
     public class RetailStoreTableDataService : SingleAsyncRequestHandler<GetRetailStoreTableDataRequest>
     {
@@ -23,8 +23,8 @@ namespace DevAx.CommerceRuntime.DocumentBranding.DataService
                 var query = new SqlPagedQuery(QueryResultSettings.SingleRecord)
                 {
                     DatabaseSchema = "ext",
-                    Select = new ColumnSet("DEVAXINVOICEIMAGES", "DEVAXQUOTEIMAGES"),
-                    From = "DevAxRetailStoreTableRptImages",
+                    Select = new ColumnSet("AxxINVOICEIMAGES", "AxxQUOTEIMAGES"),
+                    From = "AxxRetailStoreTableRptImages",
                     Where = "RecId = @channelRecId"
                 };
 

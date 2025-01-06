@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "./devDependencies/schemas/manifestSchema.json",
-  "name": "DevAxDocumentBranding",
+  "name": "AxxDocumentBranding",
   "description": "Librerias Document Branding",
   "publisher": "Axxon",
   "version": "1.0.0",

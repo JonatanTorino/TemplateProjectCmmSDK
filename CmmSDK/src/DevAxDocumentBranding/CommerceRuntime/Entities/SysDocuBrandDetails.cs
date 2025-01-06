@@ -2,7 +2,7 @@ using Microsoft.Dynamics.Commerce.Runtime.ComponentModel.DataAnnotations;
 using Microsoft.Dynamics.Commerce.Runtime.DataModel;
 using System.Runtime.Serialization;
 
-namespace DevAx.CommerceRuntime.DocumentBranding.Entities
+namespace Axx.CommerceRuntime.DocumentBranding.Entities
 {
     public class SysDocuBrandDetails : CommerceEntity
     {
